@@ -1,12 +1,20 @@
 ﻿using System;
 
+
 namespace CodeLouisvilleSoftwareDev1ConsoleApp
 {
+    using MicrosoftSucks;
+
     class MainClass
     {
         public static void Main(string[] args)
         {
-            MainMenu();
+            var keepGoing = true;
+            while (keepGoing)
+            {
+                keepGoing = MainMenu();
+            }
+
             // go back to menu
             //   go back to beginning
             // unless choice is exit
@@ -17,7 +25,7 @@ namespace CodeLouisvilleSoftwareDev1ConsoleApp
             Console.WriteLine("Program exited");
         }
 
-        public static void MainMenu()
+        public static bool MainMenu()
         {
             // show user a menu
             Console.WriteLine("Main Menu:");
@@ -44,23 +52,76 @@ namespace CodeLouisvilleSoftwareDev1ConsoleApp
             {
                 case '1':
                     Console.WriteLine("Your choice was to add two numbers");
+
+                    var firstNumber = GetNumber();
+                    var secondNumber = GetNumber();
+
+                    Console.WriteLine($"The total of {firstNumber} + {secondNumber} = {firstNumber + secondNumber}");
+
                     break;
                 case '2':
                     Console.WriteLine("Your choice was to subtract two numbers");
+
+                    firstNumber = GetNumber();
+                    secondNumber = GetNumber();
+
+                    Console.WriteLine($"The total of {firstNumber} - {secondNumber} = {firstNumber - secondNumber}");
+
                     break;
                 case '3':
                     Console.WriteLine("Your choice was to remove whitespace from a string");
+                    Console.Write("Insert string: ");
+                    var str = Console.ReadLine();
+                    Console.WriteLine($"You old string was {str}");
+                    Console.WriteLine($"You new string is  {str.Replace(" ", "")}");
+
                     break;
                 case '4':
                     Console.WriteLine("Your choice was to reverse a string");
+
+                    Console.Write("Insert string: ");
+                    str = Console.ReadLine();
+
+                    Console.WriteLine($"You old string was {str}");
+                    Console.WriteLine($"You new string is  {str.Reverse()}");
+
                     break;
                 case '5':
-                    return;
+                    return false;
                 default:
                     Console.WriteLine($"You have input the choice '{userChoice}'.");
                     Console.WriteLine("That isn't valid, try again.");
                     break;
             }
+
+            return true;
+        }
+
+        private static int GetNumber()
+        {
+            Console.Write("Insert number: ");
+            try
+            {
+                return Convert.ToInt32(Console.ReadLine());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("I don't understand, can you please try again.");
+                return GetNumber();
+            }
+        }
+    }
+}
+
+namespace MicrosoftSucks
+{
+    public static class StringExtensions
+    {
+        public static string Reverse(this string str)
+        {
+            char[] charArray = str.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
         }
     }
 }
