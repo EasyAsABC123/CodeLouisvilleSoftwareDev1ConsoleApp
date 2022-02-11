@@ -1,14 +1,21 @@
 ﻿using System;
-
+using System.Collections.Generic;
 
 namespace CodeLouisvilleSoftwareDev1ConsoleApp
 {
-    using MicrosoftSucks;
-
     class MainClass
     {
+        static List<MenuItem> menuItems = new List<MenuItem>();
+
         public static void Main(string[] args)
         {
+            menuItems.Add(new MenuItemAddTwoNumbers());
+            menuItems.Add(new MenuItemSubtractTwoNumbers());
+            menuItems.Add(new MenuItemRemoveWhitespace());
+            menuItems.Add(new MenuItemReverseString());
+            menuItems.Add(new MenuItemGetWeather());
+            menuItems.Add(new MenuItemExit());
+
             var keepGoing = true;
             while (keepGoing)
             {
@@ -29,85 +36,28 @@ namespace CodeLouisvilleSoftwareDev1ConsoleApp
         {
             // show user a menu
             Console.WriteLine("Main Menu:");
-
-            //  offer options to user
-            //   - ADD TWO NUMBERS
-            Console.WriteLine("1. Add two numbers");
-            //   - SUBTRACT TWO NUMBERS
-            Console.WriteLine("2. Subtract two numbers");
-            //   - remove whitespace from a string
-            Console.WriteLine("3. Remove whitespace from a string");
-            //   - reverse a string
-            Console.WriteLine("4. Reverse a string");
-            //  ATTEMPT ERROR HANDLING (user does something i am not expecting)
-            Console.WriteLine("5. Exit");
+            
+            for (int i = 0; i < menuItems.Count; i++)
+            {
+                MenuItem item = menuItems[i];
+                Console.WriteLine($"{i}. {item.Choice}");
+            }
 
             Console.Write("Enter your choice: ");
             // ask for their choice
-            char userChoice = Console.ReadKey().KeyChar;
+            int userChoice = Library.GetNumber();
 
             Console.WriteLine("");
-            // do their choice
-            switch (userChoice)
+
+            if (userChoice < menuItems.Count)
             {
-                case '1':
-                    Console.WriteLine("Your choice was to add two numbers");
-
-                    var firstNumber = GetNumber();
-                    var secondNumber = GetNumber();
-
-                    Console.WriteLine($"The total of {firstNumber} + {secondNumber} = {firstNumber + secondNumber}");
-
-                    break;
-                case '2':
-                    Console.WriteLine("Your choice was to subtract two numbers");
-
-                    firstNumber = GetNumber();
-                    secondNumber = GetNumber();
-
-                    Console.WriteLine($"The total of {firstNumber} - {secondNumber} = {firstNumber - secondNumber}");
-
-                    break;
-                case '3':
-                    Console.WriteLine("Your choice was to remove whitespace from a string");
-                    Console.Write("Insert string: ");
-                    var str = Console.ReadLine();
-                    Console.WriteLine($"You old string was {str}");
-                    Console.WriteLine($"You new string is  {str.Replace(" ", "")}");
-
-                    break;
-                case '4':
-                    Console.WriteLine("Your choice was to reverse a string");
-
-                    Console.Write("Insert string: ");
-                    str = Console.ReadLine();
-
-                    Console.WriteLine($"You old string was {str}");
-                    Console.WriteLine($"You new string is  {str.Reverse()}");
-
-                    break;
-                case '5':
-                    return false;
-                default:
-                    Console.WriteLine($"You have input the choice '{userChoice}'.");
-                    Console.WriteLine("That isn't valid, try again.");
-                    break;
+                return menuItems[userChoice].ExecuteChoice();
             }
-
-            return true;
-        }
-
-        private static int GetNumber()
-        {
-            Console.Write("Insert number: ");
-            try
+            else
             {
-                return Convert.ToInt32(Console.ReadLine());
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("I don't understand, can you please try again.");
-                return GetNumber();
+                Console.WriteLine($"You have input the choice '{userChoice}'.");
+                Console.WriteLine("That isn't valid, try again.");
+                return true;
             }
         }
     }
